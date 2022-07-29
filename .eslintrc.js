@@ -2,10 +2,14 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    es6: true,
+    node: true,
+    mocha: true,
   },
   extends: [
     'plugin:react/recommended',
     'airbnb',
+    //'standard',
   ],
   parserOptions: {
     ecmaFeatures: {
@@ -76,5 +80,8 @@ module.exports = {
         ],
       },
     ],
+    'no-console': 'warn',
+    'no-use-before-define': 'warn',
+    'spaced-comment': 'warn',
   },
 };
