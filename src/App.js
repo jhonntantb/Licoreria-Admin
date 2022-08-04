@@ -6,13 +6,14 @@ import { registerLicense } from '@syncfusion/ej2-base';
 
 import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
 import { Ecommerce, Orders, Calendar, Employees, Stacked, Pyramid, Customers, Kanban, Line, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor } from './pages';
+import { useStateContext } from './contexts/ContextProvider';
+
 import './App.css';
 
 registerLicense('ORg4AjUWIQA/Gnt2VVhiQlFadVlJVXxIeUx0RWFbb1p6dlRMYV1BJAtUQF1hS35Ud01iXn9acnNXT2ZY');
 
 function App() {
-  const activeMenu = true;
-  const themeSettings = true;
+  const { activeMenu, themeSettings } = useStateContext();
 
   return (
     <div>
