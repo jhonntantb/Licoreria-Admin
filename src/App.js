@@ -13,7 +13,7 @@ import './App.css';
 registerLicense('ORg4AjUWIQA/Gnt2VVhiQlFadVlJVXxIeUx0RWFbb1p6dlRMYV1BJAtUQF1hS35Ud01iXn9acnNXT2ZY');
 
 function App() {
-  const { activeMenu, themeSettings } = useStateContext();
+  const { activeMenu, themeSettings, setThemeSettings } = useStateContext();
 
   return (
     <div>
@@ -26,6 +26,7 @@ function App() {
                 className="text-3xl p-3
                   hover:drop-shadow-xl
                   hover:bg-ligth-gray text-white"
+                onClick={() => setThemeSettings(true)}
                 style={{ background: 'blue', borderRadius: '50%' }}
               >
                 <FiSettings />
@@ -66,7 +67,7 @@ function App() {
                 <Route path="/customers" element={<Customers />} />
 
                 {/** Apps */}
-                <Route path="/kamban" element={<Kanban />} />
+                <Route path="/kanban" element={<Kanban />} />
                 <Route path="/editor" element={<Editor />} />
                 <Route path="/calendar" element={<Calendar />} />
                 <Route path="/color-picker" element={<ColorPicker />} />
