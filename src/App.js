@@ -4,7 +4,7 @@ import { FiSettings } from 'react-icons/fi';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { registerLicense } from '@syncfusion/ej2-base';
 
-import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
+import { Navbar, Sidebar, ThemeSettings } from './components';
 import { Ecommerce, Orders, Calendar, Employees, Stacked, Pyramid, Customers, Kanban, Line, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor } from './pages';
 import { useStateContext } from './contexts/ContextProvider';
 
@@ -13,10 +13,10 @@ import './App.css';
 registerLicense('ORg4AjUWIQA/Gnt2VVhiQlFadVlJVXxIeUx0RWFbb1p6dlRMYV1BJAtUQF1hS35Ud01iXn9acnNXT2ZY');
 
 function App() {
-  const { activeMenu, themeSettings, setThemeSettings } = useStateContext();
+  const { activeMenu, themeSettings, setThemeSettings, currentColor, currentMode } = useStateContext();
 
   return (
-    <div>
+    <div className={currentMode === 'Dark' ? 'dark' : ''}>
       <BrowserRouter>
         <div className="flex relative dark:bg-main-dark-bg">
           <div className="fixed right-4 bottom-4" styled={{ zIndex: '1000' }}>
@@ -27,7 +27,7 @@ function App() {
                   hover:drop-shadow-xl
                   hover:bg-ligth-gray text-white"
                 onClick={() => setThemeSettings(true)}
-                style={{ background: 'blue', borderRadius: '50%' }}
+                style={{ background: currentColor, borderRadius: '50%' }}
               >
                 <FiSettings />
               </button>
@@ -44,7 +44,7 @@ function App() {
           )}
           <div
             className={
-              `dark:bg-main-bg bg-main-bg 
+              `dark:bg-main-dark-bg bg-main-bg 
               min-h-screen ${activeMenu ? 'md:ml-72 w-full' : 'w-full flex-2'}`
             }
           >
@@ -84,7 +84,6 @@ function App() {
 
               </Routes>
             </div>
-            <Footer />
           </div>
         </div>
       </BrowserRouter>
