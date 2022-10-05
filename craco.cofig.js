@@ -5,9 +5,9 @@ module.exports = {
     postcss: {
       plugins: [
         // eslint-disable-next-line import/no-extraneous-dependencies
-        require('tailwindcss'),
+        require("tailwindcss"),
         // eslint-disable-next-line import/no-extraneous-dependencies
-        require('autoprefixer'),
+        require("autoprefixer"),
       ],
     },
   },

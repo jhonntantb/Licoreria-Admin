@@ -7,3 +7,4 @@ dist/*
 bundle.js 
 .*/* 
 .*
+./src/data/dummny.js
