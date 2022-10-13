@@ -64,14 +64,7 @@ module.exports = {
         },
       },
     ],
-    'jsx-a11y/label-has-for': [
-      'error',
-      {
-        required: {
-          some: ['nesting', 'id'],
-        },
-      },
-    ],
+    'jsx-a11y/label-has-for': 0,
     'no-console': 'warn',
     'no-use-before-define': 'warn',
     'spaced-comment': 'warn',
