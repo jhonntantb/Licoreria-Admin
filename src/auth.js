@@ -9,7 +9,6 @@ export const AuthProvider = ({ children }) => {
   return <authContext.Provider value={auth}>{children}</authContext.Provider>;
 };
 
-export const useAuth = () => useContext(authContext);
 const email = 'jhonntantb@gmail.com';
 function useProvideAuth() {
   const [user, setUser] = useState(null);
@@ -54,3 +53,5 @@ function useProvideAuth() {
     logout,
   };
 }
+
+export const useAuth = () => useContext(authContext);
