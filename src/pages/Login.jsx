@@ -1,15 +1,31 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable react/jsx-no-comment-textnodes */
-import React from 'react';
+import React, { useState } from 'react';
 import Swal from 'sweetalert2';
+import { userValidate } from '../Api';
 
 const Login = () => {
+  const [userInfo, setUserInfo] = useState({ username: '', password: '' });
   const loginAlert = () => {
     Swal.fire({
       text: 'Contacte con su administrador para solicitar acceso',
       confirmButtonText: 'Aceptar',
       confirmButtonColor: '#2563EB',
     });
+  };
+
+  const handleUserInfo = (e) => {
+    e.preventDefault();
+    setUserInfo((values) => ({
+      ...values,
+      [e.target.name]: e.target.value,
+    }));
+  };
+  const handleValidate = async (e) => {
+    e.preventDefault();
+    const userReturn = await userValidate(userInfo);
+    setUserInfo({ username: '', password: '' });
+    console.log(userReturn);
   };
   return (
     <section className="h-screen">
@@ -27,24 +43,30 @@ const Login = () => {
             />
           </div>
           <div className="xl:ml-20 xl:w-5/12 lg:w-5/12 md:w-8/12 mb-12 md:mb-0">
-            <form>
+            <form onSubmit={handleValidate}>
               <div className="flex flex-row items-center justify-center lg:justify-start">
                 <p className="text-xl mb-8 mr-8">Bienvenido al Dashboard de Licoreria Pamela</p>
               </div>
               <div className="mb-6">
                 <input
                   type="text"
+                  name="username"
+                  value={userInfo.username}
                   className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  id="exampleFormControlInput2"
-                  placeholder="Email address"
+                  id="username"
+                  placeholder="Usuario"
+                  onChange={(e) => handleUserInfo(e)}
                 />
               </div>
               <div className="mb-6">
                 <input
                   type="password"
+                  name="password"
+                  value={userInfo.password}
                   className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                  id="exampleFormControlInput2"
-                  placeholder="Password"
+                  id="password"
+                  placeholder="Contraseña"
+                  onChange={(e) => handleUserInfo(e)}
                 />
               </div>
 
@@ -54,7 +76,7 @@ const Login = () => {
 
               <div className="text-center lg:text-left">
                 <button
-                  type="button"
+                  type="submit"
                   className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
                 >
                   Ingresar
