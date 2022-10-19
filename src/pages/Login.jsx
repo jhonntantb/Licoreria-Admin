@@ -3,8 +3,11 @@
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { userValidate } from '../Api';
+import { useStateContext } from '../contexts/ContextProvider';
 
 const Login = () => {
+  const { setIsAuth } = useStateContext();
+
   const [userInfo, setUserInfo] = useState({ username: '', password: '' });
   const loginAlert = () => {
     Swal.fire({
@@ -25,6 +28,7 @@ const Login = () => {
     e.preventDefault();
     const userReturn = await userValidate(userInfo);
     setUserInfo({ username: '', password: '' });
+    setIsAuth(true);
     console.log(userReturn);
   };
   return (
