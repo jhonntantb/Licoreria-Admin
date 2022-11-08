@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/label-has-for */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabase';
+import { saveProductInfo } from '../Api';
 
 const UploadImage = () => {
   // eslint-disable-next-line no-unused-vars
@@ -11,6 +12,9 @@ const UploadImage = () => {
   const [price, setPrice] = useState('');
   const [discount, setDiscount] = useState();
   const [avatarUrl, setAvatarUrl] = useState('');
+
+  const urlStorage = 'https://rrrgppszpthcqtvcifcf.supabase.co/storage/v1/object/public/licoreriapamela/';
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -22,11 +26,17 @@ const UploadImage = () => {
       }
 
       if (data) {
-        setAvatarUrl(data.Key);
+        setAvatarUrl(data.path);
+        const newProduct = await saveProductInfo({ name, price, discount, category: 1, url_imgae: `${urlStorage}/${avatarUrl}` });
+        console.log(newProduct);
         console.log('esta es la url', avatarUrl);
       }
     }
   };
+
+  useEffect(() => {
+    if (image?.name) setName(image.name);
+  }, [image]);
 
   return (
     <div>
@@ -39,7 +49,7 @@ const UploadImage = () => {
                   <div className="col-span-3 sm:col-span-2">
                     <label htmlFor="product-name" className="block text-sm font-medium text-gray-700">Nombre del Producto</label>
                     <div className="mt-1 flex rounded-md shadow-sm" id="product-name">
-                      <input type="text" name="product-name" id="product-name" value={name} onChange={(e) => setName(e.target.value)} className="block w-full h-8 flex-1 sm:text-lg" placeholder="vino ..." />
+                      <input type="text" name="product-name" id="product-name" value={name} onChange={(e) => setName(e.target.value)} className="block w-full h-8 flex-1 sm:text-lg placeholder:font-bold placeholder:text-red-500 placeholder:p-5" placeholder="nombre ..." />
                     </div>
                   </div>
                 </div>
@@ -47,14 +57,14 @@ const UploadImage = () => {
                 <div>
                   <label htmlFor="price" className="block text-sm font-medium text-gray-700">Precio</label>
                   <div className="mt-1">
-                    <input id="price" name="price" rows="3" value={price} onChange={(e) => setPrice(e.target.value)} className="mt-1 block w-full h-8 sm:text-lg" placeholder="precio" />
+                    <input id="price" name="price" rows="3" value={price} onChange={(e) => setPrice(e.target.value)} className="mt-1 block w-full h-8 sm:text-lg placeholder:font-bold placeholder:text-red-500 placeholder:p-5" placeholder="precio" />
                   </div>
                 </div>
 
                 <div>
                   <label htmlFor="discount" className="block text-sm font-medium text-gray-700">Descuento</label>
                   <div className="mt-1">
-                    <input id="discount" name="discount" type="number" min="0" rows="3" value={discount} onChange={(e) => setDiscount(e.target.value)} className="mt-1 block w-full h-8 sm:text-lg" placeholder="descuento" />
+                    <input id="discount" name="discount" type="number" min="0" rows="3" value={discount} onChange={(e) => setDiscount(e.target.value)} className="mt-1 block w-full h-8 sm:text-lg placeholder:font-bold placeholder:text-red-500 placeholder:p-5" placeholder="descuento" />
                   </div>
                 </div>
 
@@ -67,7 +77,7 @@ const UploadImage = () => {
                       </svg>
                       <div className="flex text-sm text-gray-600">
                         <label htmlFor="file-upload" className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
-                          <span>Seleccionar Archivo</span>
+                          {image ? <span>Seleccionar Otro Archivo</span> : <span>Seleccionar Archivo</span>}
                           <input id="file-upload" name="file-upload" type="file" className="sr-only" accept="image/jpeg image/png" onChange={(e) => setImage(e.target.files[0])} />
                         </label>
                         <p className="pl-1">o arrastar y soltar</p>

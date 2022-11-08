@@ -19,3 +19,21 @@ export const userValidate = async (userInfo) => {
     console.log('error de validacion en el fornd', error);
   }
 };
+
+export const saveProductInfo = async (userInfo) => {
+  try {
+    const response = await fetch(`${apiUrl}/products`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+        body: JSON.stringify(userInfo),
+      },
+    });
+
+    const newProduct = await response.json();
+    return newProduct;
+  } catch (error) {
+    console.log(error);
+  }
+};
