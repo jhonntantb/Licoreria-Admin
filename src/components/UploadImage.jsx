@@ -27,7 +27,7 @@ const UploadImage = () => {
 
       if (data) {
         setAvatarUrl(data.path);
-        const newProduct = await saveProductInfo({ name, price, discount, category: 1, url_imgae: `${urlStorage}/${avatarUrl}` });
+        const newProduct = await saveProductInfo({ name, price, discount, category: 1, url_image: `${urlStorage}${data.path}` });
         console.log(newProduct);
         console.log('esta es la url', avatarUrl);
       }

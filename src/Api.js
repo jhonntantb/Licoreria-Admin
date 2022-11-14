@@ -3,7 +3,6 @@
 const apiUrl = 'https://pame-backend.herokuapp.com/api';
 
 export const userValidate = async (userInfo) => {
-  console.log(userInfo);
   try {
     const res = await fetch(`${apiUrl}/user/validate`, {
       method: 'POST',
@@ -20,18 +19,18 @@ export const userValidate = async (userInfo) => {
   }
 };
 
-export const saveProductInfo = async (userInfo) => {
+export const saveProductInfo = async (productInfo) => {
   try {
     const response = await fetch(`${apiUrl}/products`, {
       method: 'POST',
       headers: {
         Accept: 'application/json, text/plain, */*',
         'Content-Type': 'application/json',
-        body: JSON.stringify(userInfo),
       },
+      body: JSON.stringify(productInfo),
     });
 
-    const newProduct = await response.json();
+    const newProduct = response.json();
     return newProduct;
   } catch (error) {
     console.log(error);
