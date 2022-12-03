@@ -18,3 +18,5 @@ export { default as Pie } from './Charts/Pie';
 export { default as ChartsHeader } from './ChartsHeader';
 export { default as Header } from './Header';
 export { default as UploadImage } from './UploadImage';
+export { default as SpinIcon } from './SpinIcon';
+export { default as Modal } from './Modal/Modal';

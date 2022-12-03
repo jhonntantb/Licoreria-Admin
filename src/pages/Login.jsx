@@ -1,21 +1,15 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useState } from 'react';
-import Swal from 'sweetalert2';
 import { userValidate } from '../Api';
+import { loginAlert } from '../utils/alerts/LoginAlerts';
 import { useStateContext } from '../contexts/ContextProvider';
+import { SpinIcon, Modal } from '../components';
 
 const Login = () => {
   const { setIsAuth } = useStateContext();
 
   const [userInfo, setUserInfo] = useState({ username: '', password: '' });
-  const loginAlert = () => {
-    Swal.fire({
-      text: 'Contacte con su administrador para solicitar acceso',
-      confirmButtonText: 'Aceptar',
-      confirmButtonColor: '#2563EB',
-    });
-  };
 
   const handleUserInfo = (e) => {
     e.preventDefault();
@@ -85,6 +79,9 @@ const Login = () => {
                 >
                   Ingresar
                 </button>
+                <Modal>
+                  <SpinIcon />
+                </Modal>
               </div>
             </form>
           </div>

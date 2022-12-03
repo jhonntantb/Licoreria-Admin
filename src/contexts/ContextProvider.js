@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import { useModal } from '../hooks/useModal';
 
 const StateContext = createContext();
 
@@ -17,6 +18,8 @@ export const ContextProvider = ({ children }) => {
   const [activeMenu, setActiveMenu] = useState(true);
   const [isClicked, setIsClicked] = useState(initialState);
   const [isAuth, setIsAuth] = useState(false);
+
+  const [isOpenSpin, openModalspin, closeModalSpin] = useModal();
 
   const setMode = (e) => {
     setCurrentMode(e.target.value);
@@ -55,6 +58,9 @@ export const ContextProvider = ({ children }) => {
         setThemeSettings,
         isAuth,
         setIsAuth,
+        isOpenSpin,
+        openModalspin,
+        closeModalSpin,
       }}
     >
       {children}
