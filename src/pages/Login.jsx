@@ -5,6 +5,7 @@ import { userValidate } from '../Api';
 import { loginAlert } from '../utils/alerts/LoginAlerts';
 import { useStateContext } from '../contexts/ContextProvider';
 import { SpinIcon, Modal } from '../components';
+// import { useModal } from '../hooks/useModal';
 
 const Login = () => {
   const { setIsAuth } = useStateContext();

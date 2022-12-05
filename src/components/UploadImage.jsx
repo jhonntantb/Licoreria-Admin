@@ -3,39 +3,63 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabase';
 import { saveProductInfo } from '../Api';
+import { notImageAlert, saveProductAlertExit, saveProductAlertErr } from '../utils/alerts/SaveProduct';
+
+const productInfo = {
+  name: '',
+  price: 0,
+  discount: 0,
+  avatarUrl: '',
+};
 
 const UploadImage = () => {
   // eslint-disable-next-line no-unused-vars
 
   const [image, setImage] = useState(null);
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [discount, setDiscount] = useState();
-  const [avatarUrl, setAvatarUrl] = useState('');
+
+  const [productData, setProductData] = useState(productInfo);
 
   const urlStorage = 'https://rrrgppszpthcqtvcifcf.supabase.co/storage/v1/object/public/licoreriapamela/';
+
+  const handleImage = (e) => {
+    setImage(e.target.files[0]);
+  };
+  const handleForm = (e) => {
+    e.preventDefault();
+    setProductData((value) => ({
+      ...value,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (image) {
-      const { data, error } = await supabase.storage.from('licoreriapamela').upload(name, image);
-      console.log('esta es la data', data);
+      const { data, error } = await supabase.storage.from('licoreriapamela').upload(productData.name, image);
       if (error) {
         console.log('ocurrio un error', error);
+        saveProductAlertErr();
       }
 
       if (data) {
-        setAvatarUrl(data.path);
-        const newProduct = await saveProductInfo({ name, price, discount, category: 1, url_image: `${urlStorage}${data.path}` });
+        setProductData({ ...productData, avatarUrl: `${urlStorage}${data.path}` });
+        const newProduct = await saveProductInfo(productData);
         console.log(newProduct);
-        console.log('esta es la url', avatarUrl);
+        console.log('esta es la url', productData.avatarUrl);
+        setProductData(productInfo);
+        setImage(null);
+        saveProductAlertExit();
       }
+    } else {
+      notImageAlert();
+      setImage(null);
+      setProductData(productInfo);
     }
   };
 
   useEffect(() => {
-    if (image?.name) setName(image.name);
+    if (image?.name) setProductData({ ...productData, name: image.name });
   }, [image]);
 
   return (
@@ -49,7 +73,7 @@ const UploadImage = () => {
                   <div className="col-span-3 sm:col-span-2">
                     <label htmlFor="product-name" className="block text-sm font-medium text-gray-700">Nombre del Producto</label>
                     <div className="mt-1 flex rounded-md shadow-sm" id="product-name">
-                      <input type="text" name="product-name" id="product-name" value={name} onChange={(e) => setName(e.target.value)} className="block w-full h-8 flex-1 sm:text-lg placeholder:font-bold placeholder:text-red-500 placeholder:p-5" placeholder="nombre ..." />
+                      <input type="text" name="name" id="product-name" value={productData.name} onChange={(e) => handleForm(e)} className="block w-full h-8 flex-1 sm:text-lg placeholder:font-bold placeholder:text-red-500 placeholder:p-5" placeholder="Nombre ..." />
                     </div>
                   </div>
                 </div>
@@ -57,14 +81,14 @@ const UploadImage = () => {
                 <div>
                   <label htmlFor="price" className="block text-sm font-medium text-gray-700">Precio</label>
                   <div className="mt-1">
-                    <input id="price" name="price" rows="3" value={price} onChange={(e) => setPrice(e.target.value)} className="mt-1 block w-full h-8 sm:text-lg placeholder:font-bold placeholder:text-red-500 placeholder:p-5" placeholder="precio" />
+                    <input id="price" name="price" rows="3" value={productData.price} onChange={(e) => handleForm(e)} className="mt-1 block w-full h-8 sm:text-lg placeholder:font-bold placeholder:text-red-500 placeholder:p-5" placeholder="Precio" />
                   </div>
                 </div>
 
                 <div>
                   <label htmlFor="discount" className="block text-sm font-medium text-gray-700">Descuento</label>
                   <div className="mt-1">
-                    <input id="discount" name="discount" type="number" min="0" rows="3" value={discount} onChange={(e) => setDiscount(e.target.value)} className="mt-1 block w-full h-8 sm:text-lg placeholder:font-bold placeholder:text-red-500 placeholder:p-5" placeholder="descuento" />
+                    <input id="discount" name="discount" type="number" min="0" rows="3" value={productData.discount} onChange={(e) => handleForm(e)} className="mt-1 block w-full h-8 sm:text-lg placeholder:font-bold placeholder:text-red-500 placeholder:p-5" placeholder="Descuento" />
                   </div>
                 </div>
 
@@ -78,7 +102,7 @@ const UploadImage = () => {
                       <div className="flex text-sm text-gray-600">
                         <label htmlFor="file-upload" className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                           {image ? <span>Seleccionar Otro Archivo</span> : <span>Seleccionar Archivo</span>}
-                          <input id="file-upload" name="file-upload" type="file" className="sr-only" accept="image/jpeg image/png" onChange={(e) => setImage(e.target.files[0])} />
+                          <input id="file-upload" name="file-upload" type="file" className="sr-only" accept="image/jpeg image/png" onChange={(e) => handleImage(e)} />
                         </label>
                         <p className="pl-1">o arrastar y soltar</p>
                       </div>
